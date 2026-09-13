@@ -16,13 +16,35 @@ main (+16,-2) ↑2 ↓1
 
 ## 安装
 
-在此目录的父目录执行：
+三种方式都在 DSH + pnpm 11.21.0 上实测通过。插件是纯 JavaScript，`lib/` 已随仓库提交，**不需要任何构建步骤，也不会触发 pnpm 的构建授权提示**。
+
+**① 从 GitHub 直接安装（推荐）**
+
+```bash
+dsh plugin --profile web add github:pinzza/dsh-git-statusline
+```
+
+**② 从本地检出安装**（在包含本目录的父目录执行；`dsh plugin` 会把相对路径锚定到调用目录）
 
 ```bash
 dsh plugin --profile web add ./dsh-git-statusline
 ```
 
+**③ 从 Release 的 tarball 安装**（与 ① 等价，但可固定版本）
+
+```bash
+dsh plugin --profile web add ./dsh-git-statusline-0.1.0.tgz
+```
+
 安装后重启 `dsh web`。如果 Web 服务由其他进程管理，重启该进程并刷新 `http://127.0.0.1:3080`。
+
+验证插件层已加载：
+
+```bash
+dsh --profile web --dump-config | grep -A2 dsh-git-statusline
+```
+
+应能看到 `# == dsh-git-statusline` 这一层。
 
 卸载：
 
@@ -33,7 +55,7 @@ dsh plugin --profile web remove dsh-git-statusline
 ## 验证
 
 ```bash
-npm test --prefix dsh-git-statusline
+node --test        # 在本目录执行：4 个测试
 ```
 
 插件每 5 秒固定轮询一次，并在窗口重新获得焦点时立即刷新。同一时刻最多一个进行中的请求（客户端并发去重）。Git 命令均为只读操作，设置 `GIT_OPTIONAL_LOCKS=0`。
