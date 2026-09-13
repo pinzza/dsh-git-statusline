@@ -1,0 +1,3 @@
+- insert:
+    - id: git-statusline
+      name: dsh-git-statusline
