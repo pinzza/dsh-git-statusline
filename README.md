@@ -1,6 +1,6 @@
 # dsh-git-statusline
 
-DSH Web 侧边栏底部的紧凑 Git 状态插件，参考 ccstatusline-zh 的 Git widgets。
+DSH Web 的紧凑 Git 状态插件，参考 ccstatusline-zh 的 Git widgets。显示位置可在设置页切换：侧边栏底部（默认）、会话顶部标题后方、对话框上方、对话框下方，或关闭。
 
 显示格式：
 
@@ -13,6 +13,20 @@ main (+16,-2) ↑2 ↓1
 - `↓1`：当前分支相对 upstream 待拉取的提交数。
 - `✓`：工作区干净，且相对 upstream 没有领先或落后。
 - 无 upstream 时不会显示错误的“已推送”结论，悬停提示会说明无法判断。
+
+## 显示位置
+
+设置 → **Git 状态栏** → 显示位置。选择保存在浏览器 `localStorage`（键 `dsh-git-statusline:config`），改完立即生效，无需重启 DSH。
+
+| 位置 | DSH 插槽 | 形态 |
+| --- | --- | --- |
+| 侧边栏底部（默认） | `sidebar.footer.action` | 侧边栏一行；收起成 56px 轨道时退化为 `↑` / `↓` / `±` / `✓` 单字符 |
+| 会话顶部标题后方 | `conversation.session.header.actions` | 标题栏内的小 chip |
+| 对话框上方 | `conversation.input.dock` | 输入框上方的 chip，独占一行 |
+| 对话框下方 | `conversation.composer.dock` | 输入框下方状态行内的纯文本 |
+| 不显示 | — | 完全不注册插槽，也不发请求 |
+
+> “对话框下方”与 DSH 内置的用量统计、上下文占比同处一行且宽度预算很紧：实测带边框 chip 会把那一行挤到省略号，所以该位置改用无边框纯文本。若在意那一行，建议选“会话顶部标题后方”。
 
 ## 安装
 

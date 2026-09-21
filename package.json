@@ -1,7 +1,7 @@
 {
   "name": "dsh-git-statusline",
-  "version": "0.1.0",
-  "description": "Compact Git worktree and upstream status for the DSH web sidebar footer",
+  "version": "0.2.0",
+  "description": "Compact Git worktree and upstream status for DSH web, placeable in the sidebar footer, session header, or above/below the composer",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
