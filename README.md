@@ -30,7 +30,7 @@ main (+16,-2) ↑2 ↓1
 
 ## 安装
 
-三种方式都在 DSH + pnpm 11.21.0 上实测通过。插件是纯 JavaScript，`lib/` 已随仓库提交，**不需要任何构建步骤，也不会触发 pnpm 的构建授权提示**。
+① ② 在 DSH + pnpm 11.21.0 上实测通过，③ 安装的是同一份预构建代码。插件是纯 JavaScript，`lib/` 已随仓库提交，**不需要任何构建步骤，也不会触发 pnpm 的构建授权提示**。
 
 **① 从 GitHub 直接安装（推荐）**
 
@@ -44,11 +44,15 @@ dsh plugin --profile web add github:pinzza/dsh-git-statusline
 dsh plugin --profile web add ./dsh-git-statusline
 ```
 
-**③ 从 Release 的 tarball 安装**（与 ① 等价，但可固定版本）
+**③ 从 Release 的预构建 tarball 安装**（与 ① 等价，离线也可用）
 
 ```bash
-dsh plugin --profile web add ./dsh-git-statusline-0.1.0.tgz
+curl -L -o dsh-git-statusline.tgz \
+  https://github.com/pinzza/dsh-git-statusline/releases/latest/download/dsh-git-statusline.tgz
+dsh plugin --profile web add ./dsh-git-statusline.tgz
 ```
+
+> 该资产名不含版本号，`releases/latest/download/` 会随最新 Release 走，因此不需要在每次发版后改这个链接。想固定版本就用钉住 tag 的形式：`.../releases/download/v0.2.0/dsh-git-statusline.tgz`。
 
 安装后重启 `dsh web`。如果 Web 服务由其他进程管理，重启该进程并刷新 `http://127.0.0.1:3080`。
 
