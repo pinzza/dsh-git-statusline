@@ -60,6 +60,8 @@ node --test        # 在本目录执行：4 个测试
 
 插件每 5 秒固定轮询一次，并在窗口重新获得焦点时立即刷新。同一时刻最多一个进行中的请求（客户端并发去重）。Git 命令均为只读操作，设置 `GIT_OPTIONAL_LOCKS=0`。
 
+> **不显示时的排查顺序**：① 当前会话的工作目录不是 git 仓库（`isRepo=false`，插件按设计隐藏）；② DSH 版本。`0.1.6-alpha.2` 起 `sessions.list` 的列表快照不再带 `current`/`currentAddress`，当前会话改由 `uiSession` 服务的 `current` 绑定源暴露（值形如 `{ key: sessionId }`）；`lib/client.js` 优先读该绑定源，缺失时回退到旧版的 `list.current`。若升级 DSH 后状态栏消失，先确认浏览器 Network 里是否还有 `POST /git-statusline/status`——有请求但无渲染即属于情况 ①。
+
 > **为什么 5 秒轮询不烧 CPU**：服务端每次请求先做 mtime 预检（stat `.git/HEAD` 与 `.git/index`，毫秒级）——工作区未变直接命中缓存，**连 git 进程都不拉起**；只有 index/HEAD 变化（如 git add/commit）才真正执行 git。因此轮询本身成本几乎为零，无需事件驱动或长间隔。
 
 > **性能保护**（机制借鉴自 ccstatusline 的 git 缓存设计）：Windows 挂载路径（WSL 的 `/mnt/*`，即 9P/v9fs/drvfs）上 git 遍历工作树极慢（分钟级），服务端针对慢速文件系统：
